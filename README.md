@@ -1,24 +1,24 @@
-# AURA-VLA: Adaptive Uncertainty and Region-Aligned Fine-Tuning for Vision-Language-Action Models
+# UA-CG-OFT: Uncertainty-Aware and Counterfactual-Grounding Optimized Fine-Tuning for Vision-Language-Action Models
 
 **Research paper**: a 
 
-**Project Github**: https://github.com/FooStoch/AURA-VLA
+**Project Github**: https://github.com/FooStoch/UA-CG-OFT
 
 **Summary video**: a
 
 **Full project zip**: a
 
-AURA-VLA is a fine-tuning framework for Vision-Language-Action (VLA) models. It extends the OpenVLA-OFT training stack with two auxiliary objectives:
+UA-CG-OFT is a fine-tuning framework for Vision-Language-Action (VLA) models. It extends the OpenVLA-OFT training stack with two auxiliary objectives:
 
 - **Adaptive uncertainty:** uses action risk from action-token representations and action statistics to predict an uncertainty score for adaptive flow matching reasoning
 - **Region alignment:** aligns language-conditioned visual patch features with target regions using negative-region contrastive loss and counterfactual action supervision
 
-We retain the OpenVLA-compatible continuous action heads (L1 regression, action chunking, etc.), LoRA fine-tuning, and LIBERO/ALOHA workflows. The AURA-VLA additions are opt-in, so ordinary OpenVLA fine-tuning remains available.
+We retain the OpenVLA-compatible continuous action heads (L1 regression, action chunking, etc.), LoRA fine-tuning, and LIBERO/ALOHA workflows. The UA-CG-OFT additions are opt-in, so ordinary OpenVLA fine-tuning remains available.
 
 ## Repository layout
 
-- `vla-scripts/finetune.py` — main fine-tuning entry point and AURA-VLA configuration.
-- `prismatic/models/aura_vla.py` — adaptive-uncertainty and region-alignment module.
+- `vla-scripts/finetune.py` — main fine-tuning entry point and UA-CG-OFT configuration.
+- `prismatic/models/ua_cg_oft.py` — adaptive-uncertainty and region-alignment module.
 - `experiments/robot/libero/run_libero_eval.py` — LIBERO evaluation entry point.
 - `experiments/robot/openvla_utils.py` and `experiments/robot/robot_utils.py` — model loading and action-generation utilities.
 - `LIBERO.md` and `ALOHA.md` — benchmark-specific setup and commands.
@@ -33,7 +33,7 @@ Inference:
 Training:
 
 - Between 1 and 8 GPUs with approximately 27–80 GB VRAM each, depending on the training setup and batch size, using the default `bfloat16` dtype.
-- AURA-VLA adds the uncertainty and region-alignment heads; actual memory use also depends on whether region masks and counterfactual examples are included in a batch.
+- UA-CG-OFT adds the uncertainty and region-alignment heads; actual memory use also depends on whether region masks and counterfactual examples are included in a batch.
 
 ## Quick Start
 
@@ -91,7 +91,7 @@ for action in actions:
     print(action)
 ```
 
-For an AURA-VLA-trained checkpoint, load its separate `aura_vla_module--<step>_checkpoint.pt` with `get_aura_vla_module` from `experiments.robot.openvla_utils`, then pass it as `aura_vla_module=` to `get_vla_action` (or `get_action`). This auxiliary module is used by the adaptive flow-matching path; the baseline example above works without it.
+For a UA-CG-OFT-trained checkpoint, load its separate `ua_cg_module--<step>_checkpoint.pt` with `get_ua_cg_module` from `experiments.robot.openvla_utils`, then pass it as `ua_cg_module=` to `get_vla_action` (or `get_action`). This auxiliary module is used by the adaptive flow-matching path; the baseline example above works without it.
 
 ## Installation
 
@@ -103,19 +103,19 @@ pip install -e LIBERO
 pip install -r experiments/robot/libero/libero_requirements.txt
 ```
 
-## AURA-VLA Fine-Tuning
+## UA-CG-OFT Fine-Tuning
 
-Use [vla-scripts/finetune.py](vla-scripts/finetune.py) as the training entry point. Add the following flag to enable AURA-VLA:
+Use [vla-scripts/finetune.py](vla-scripts/finetune.py) as the training entry point. Add the following flag to enable UA-CG-OFT:
 
 ```bash
---use_aura_vla True
+--use_ua_cg_oft True
 ```
 
-The available AURA-VLA controls are `aura_hidden_dim`, `aura_uncertainty_loss_weight`, `aura_uncertainty_error_scale`, `region_alignment_loss_weight`, `region_alignment_dice_weight`, `region_contrastive_loss_weight`, `region_equivariance_loss_weight`, and `region_contrastive_temperature`.
+The available UA-CG-OFT controls are `ua_cg_hidden_dim`, `ua_uncertainty_loss_weight`, `ua_uncertainty_error_scale`, `cg_grounding_loss_weight`, `cg_grounding_dice_weight`, `cg_contrastive_loss_weight`, `cg_equivariance_loss_weight`, and `cg_contrastive_temperature`.
 
 The uncertainty loss is active whenever predicted and target actions are available. Region alignment additionally uses `target_masks` and can use `negative_target_masks`; counterfactual action consistency uses the optional existing `counterfactual_*` batch fields. Missing optional region/counterfactual fields cause only their associated loss terms to be skipped.
 
-Each enabled AURA-VLA run saves the auxiliary state separately as `aura_vla_module--<step>_checkpoint.pt`. Keep it with the corresponding model, action-head, and projector checkpoints.
+Each enabled UA-CG-OFT run saves the auxiliary state separately as `ua_cg_module--<step>_checkpoint.pt`. Keep it with the corresponding model, action-head, and projector checkpoints.
 
 ## Training and Evaluation
 
