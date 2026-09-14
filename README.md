@@ -1,6 +1,6 @@
 # UA-CG-OFT: Uncertainty-Aware and Counterfactual-Grounding Optimized Fine-Tuning for Vision-Language-Action Models
 
-**Research paper**: https://drive.google.com/file/d/15MVUuaImx9hxBDYKYCv_LEpC15mnFx7t/view?usp=sharing
+**Research paper**: https://drive.google.com/file/d/1XCZPSYvMw02FdkGFeAwl0Q2Cm1FB43xy/view?usp=sharing
 
 **Project Github**: https://github.com/FooStoch/UA-CG-OFT
 
