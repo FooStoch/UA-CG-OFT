@@ -1,12 +1,10 @@
 # UA-CG-OFT: Uncertainty-Aware and Counterfactual-Grounding Optimized Fine-Tuning for Vision-Language-Action Models
 
-**Research paper**: a 
+**Research paper**: https://drive.google.com/file/d/15MVUuaImx9hxBDYKYCv_LEpC15mnFx7t/view?usp=sharing
 
 **Project Github**: https://github.com/FooStoch/UA-CG-OFT
 
-**Summary video**: a
-
-**Full project zip**: a
+**Experimental Results Zip**: https://drive.google.com/file/d/1WPenXWLt-FvDVAB2JRziq9KtCBhXJXpq/view?usp=sharing
 
 UA-CG-OFT is a fine-tuning framework for Vision-Language-Action (VLA) models. It extends the OpenVLA-OFT training stack with two auxiliary objectives:
 
